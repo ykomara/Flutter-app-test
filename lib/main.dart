@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() => runApp(const MyApp());
 
@@ -10,35 +11,75 @@ class MyApp extends StatelessWidget {
     const String appTitle = 'Désordre page';
     return MaterialApp(
       title: appTitle,
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text(appTitle),
-          centerTitle: true,
-        ),
-        body: const SingleChildScrollView(
-          child: Column(
-            children: [
-              ImageSection(
-                image: 'assets/images/image.png',
+      localizationsDelegates: [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: [
+        Locale('en'), // English
+        Locale('es'), // Spanish
+        Locale('fr'), // French
+      ],
+      home: Builder(
+        builder: (context) {
+          Locale currentLocale = Localizations.localeOf(context);
+          print("Langue actuelle : ${currentLocale.languageCode}");
+          return Localizations.override(
+            context: context,
+            locale: const Locale('fr'),
+            child: Scaffold(
+              appBar: AppBar(
+                title: const Text(appTitle),
+                centerTitle: true,
               ),
-              TitleSection(
-                name: '18 Rue Georges Charpak',
-                location: '35000 Rennes',
+              body: Builder(
+                builder: (context) {
+                  Locale currentLocale = Localizations.localeOf(context);
+                  print("Langue actuelle : ${currentLocale.languageCode}");
+
+                  return SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        ImageSection(
+                          image: 'assets/images/image.png',
+                        ),
+                        TitleSection(
+                          name: '18 Rue Georges Charpak',
+                          location: '35000 Rennes',
+                        ),
+                        ButtonSection(),
+                        TextSection(
+                          description:
+                              'Lake Oeschinen lies at the foot of the Blüemlisalp in the '
+                              'Bernese Alps. Situated 1,578 meters above sea level, it '
+                              'is one of the larger Alpine Lakes. A gondola ride from '
+                              'Kandersteg, followed by a half-hour walk through pastures '
+                              'and pine forest, leads you to the lake, which warms to 20 '
+                              'degrees Celsius in the summer. Activities enjoyed here '
+                              'include rowing, and riding the summer toboggan run.',
+                        ),
+                        const SizedBox(height: 20),
+                        Text(
+                          "Langue actuelle : ${currentLocale.languageCode}",
+                          style: const TextStyle(
+                              fontSize: 18, fontWeight: FontWeight.bold),
+                        ),
+                        const SizedBox(height: 20),
+                        CalendarDatePicker(
+                          initialDate: DateTime.now(),
+                          firstDate: DateTime(1900),
+                          lastDate: DateTime(2100),
+                          onDateChanged: (value) {},
+                        ),
+                      ],
+                    ),
+                  );
+                },
               ),
-              ButtonSection(),
-              TextSection(
-                description:
-                    'Lake Oeschinen lies at the foot of the Blüemlisalp in the '
-                    'Bernese Alps. Situated 1,578 meters above sea level, it '
-                    'is one of the larger Alpine Lakes. A gondola ride from '
-                    'Kandersteg, followed by a half-hour walk through pastures '
-                    'and pine forest, leads you to the lake, which warms to 20 '
-                    'degrees Celsius in the summer. Activities enjoyed here '
-                    'include rowing, and riding the summer toboggan run.',
-              ),
-            ],
-          ),
-        ),
+            ),
+          );
+        },
       ),
     );
   }
@@ -94,8 +135,7 @@ class TitleSection extends StatelessWidget {
             ),
           ),
           /*3*/
-        
-          
+
           const FavoriteWidget(),
         ],
       ),
@@ -198,16 +238,12 @@ class ImageSection extends StatelessWidget {
   }
 }
 
-
-
 class FavoriteWidget extends StatefulWidget {
   const FavoriteWidget({super.key});
 
   @override
   State<FavoriteWidget> createState() => _FavoriteWidgetState();
 }
-
-
 
 class _FavoriteWidgetState extends State<FavoriteWidget> {
   bool _isFavorited = true;
@@ -222,10 +258,9 @@ class _FavoriteWidgetState extends State<FavoriteWidget> {
           child: IconButton(
             padding: const EdgeInsets.all(0),
             alignment: Alignment.center,
-            icon:
-                (_isFavorited
-                    ? const Icon(Icons.star)
-                    : const Icon(Icons.star_border)),
+            icon: (_isFavorited
+                ? const Icon(Icons.star)
+                : const Icon(Icons.star_border)),
             color: Colors.red[500],
             onPressed: _toggleFavorite,
           ),
@@ -236,16 +271,14 @@ class _FavoriteWidgetState extends State<FavoriteWidget> {
   }
 
   void _toggleFavorite() {
-  setState(() {
-    if (_isFavorited) {
-      _favoriteCount -= 1;
-      _isFavorited = false;
-    } else {
-      _favoriteCount += 1;
-      _isFavorited = true;
-    }
-  });
+    setState(() {
+      if (_isFavorited) {
+        _favoriteCount -= 1;
+        _isFavorited = false;
+      } else {
+        _favoriteCount += 1;
+        _isFavorited = true;
+      }
+    });
+  }
 }
-
-}
-
