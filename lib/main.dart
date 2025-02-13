@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 void main() => runApp(const MyApp());
 
 class MyApp extends StatelessWidget {
-  
   const MyApp({super.key});
 
   @override
@@ -14,15 +13,29 @@ class MyApp extends StatelessWidget {
       home: Scaffold(
         appBar: AppBar(
           title: const Text(appTitle),
+          centerTitle: true,
         ),
         body: const SingleChildScrollView(
           child: Column(
             children: [
+              ImageSection(
+                image: 'assets/images/image.png',
+              ),
               TitleSection(
-              name: 'Oeschinen Lake Campground',
-              location: 'Kandersteg, Switzerland',
-            ),
-            ButtonSection(),
+                name: '18 Rue Georges Charpak',
+                location: '35000 Rennes',
+              ),
+              ButtonSection(),
+              TextSection(
+                description:
+                    'Lake Oeschinen lies at the foot of the Blüemlisalp in the '
+                    'Bernese Alps. Situated 1,578 meters above sea level, it '
+                    'is one of the larger Alpine Lakes. A gondola ride from '
+                    'Kandersteg, followed by a half-hour walk through pastures '
+                    'and pine forest, leads you to the lake, which warms to 20 '
+                    'degrees Celsius in the summer. Activities enjoyed here '
+                    'include rowing, and riding the summer toboggan run.',
+              ),
             ],
           ),
         ),
@@ -53,6 +66,15 @@ class TitleSection extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 /*2*/
+                const Text(
+                  "Désordre page",
+                  style: TextStyle(
+                    fontSize: 22,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                  ),
+                ),
+                const SizedBox(height: 8),
                 Padding(
                   padding: const EdgeInsets.only(bottom: 8),
                   child: Text(
@@ -133,7 +155,7 @@ class ButtonWithText extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Icon(icon, color: color),
-        const SizedBox(height: 8), 
+        const SizedBox(height: 8),
         Text(
           label,
           style: TextStyle(
@@ -144,5 +166,36 @@ class ButtonWithText extends StatelessWidget {
         ),
       ],
     );
+  }
+}
+
+class TextSection extends StatelessWidget {
+  const TextSection({
+    super.key,
+    required this.description,
+  });
+
+  final String description;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(32),
+      child: Text(
+        description,
+        softWrap: true,
+      ),
+    );
+  }
+}
+
+class ImageSection extends StatelessWidget {
+  const ImageSection({super.key, required this.image});
+
+  final String image;
+
+  @override
+  Widget build(BuildContext context) {
+    return Image.asset(image, width: 600, height: 240, fit: BoxFit.cover);
   }
 }
